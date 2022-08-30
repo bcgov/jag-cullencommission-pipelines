@@ -84,7 +84,15 @@ void deploy(String appName, String appSuffix, String namespace, String envTag) {
 }
 
 node {
-  def config = load "../workspace@script/jenkins/config.groovy"
+  stage("Init") {
+    script {
+      dir(''){
+        checkout scm
+        config = load 'jenkins/config.groovy'
+      }
+    }
+  }
+
   def pipeline_name = "${config.APP_NAME}-pipeline"
 
   config.BUILDS.each {
